@@ -15,6 +15,10 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     std::env::var("DATABASE_URL").expect("DATABASE_URL not found in your .env");
+    
+    let port = std::env::var("PORT")
+        .expect("PORT not found in your .env")
+        .parse::<u16>().unwrap();
 
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
@@ -26,7 +30,7 @@ async fn main() -> std::io::Result<()> {
             .service(routes::login::handler)
             .service(routes::register::handler)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", port))?
     .run()
     .await
 }
