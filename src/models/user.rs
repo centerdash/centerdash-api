@@ -1,0 +1,9 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, sqlx::FromRow)]
+pub struct User {
+    #[serde(rename = "accountID")]
+    pub account_id: i32,
+    pub username: String,
+    pub password: String,
+}
