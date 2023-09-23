@@ -1,4 +1,4 @@
-use actix_web::{HttpServer, App, web};
+use actix_web::{HttpServer, App, web, middleware::Logger};
 use sqlx::mysql::MySqlPoolOptions;
 use dotenv::dotenv;
 
@@ -13,9 +13,10 @@ struct AppState {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     std::env::var("DATABASE_URL").expect("DATABASE_URL not found in your .env");
-    
+
     let port = std::env::var("PORT")
         .expect("PORT not found in your .env")
         .parse::<u16>().unwrap();
@@ -29,6 +30,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(AppState { db: pool.clone() }))
             .service(routes::login::handler)
             .service(routes::register::handler)
+            .wrap(Logger::default())
     })
     .bind(("127.0.0.1", port))?
     .run()
