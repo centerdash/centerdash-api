@@ -1,5 +1,6 @@
-use actix_web::{HttpServer, App, web, middleware::Logger};
+use actix_web::{HttpServer, App, web, middleware::Logger, http};
 use sqlx::mysql::MySqlPoolOptions;
+use actix_cors::Cors;
 use dotenv::dotenv;
 
 mod routes;
@@ -26,11 +27,20 @@ async fn main() -> std::io::Result<()> {
         .connect(std::env::var("DATABASE_URL").unwrap().as_str()).await.unwrap();
 
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("https://www.centerdash.ru")
+            .allowed_origin("https://centerdash.ru")
+            .allowed_methods(vec!["GET", "POST"])
+            .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+            .allowed_header(http::header::CONTENT_TYPE)
+            .max_age(3600);
+
         App::new()
             .app_data(web::Data::new(AppState { db: pool.clone() }))
             .service(routes::login::handler)
             .service(routes::register::handler)
             .wrap(Logger::default())
+            .wrap(cors)
     })
     .bind(("127.0.0.1", port))?
     .run()
