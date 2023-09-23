@@ -14,9 +14,11 @@ struct AppState {
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
+    std::env::var("DATABASE_URL").expect("DATABASE_URL not found in your .env");
+
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
-        .connect("mysql://postgres:password@localhost/test").await.unwrap();
+        .connect(std::env::var("DATABASE_URL").unwrap().as_str()).await.unwrap();
 
     HttpServer::new(move || {
         App::new()
