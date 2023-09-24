@@ -17,6 +17,8 @@ async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     std::env::var("DATABASE_URL").expect("DATABASE_URL not found in your .env");
+    std::env::var("HCAPTCHA_SECRET").expect("HCAPTCHA_SECRET not found in your .env");
+    std::env::var("SECRET").expect("SECRET not found in your .env");
 
     let port = std::env::var("PORT")
         .expect("PORT not found in your .env")

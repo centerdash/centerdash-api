@@ -34,7 +34,7 @@ async fn handler(body: web::Json<Body>, state: web::Data<AppState>) -> impl Resp
         }));
     }
 
-    HttpResponse::Unauthorized().json(json!({
+    HttpResponse::Ok().json(json!({
         "success": true,
         "token": &user.token,
     }))

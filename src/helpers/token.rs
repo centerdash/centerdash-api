@@ -22,5 +22,5 @@ pub fn generate_jwt(username: String) -> String {
         exp: timestamp + 2630000,
     };
 
-    jsonwebtoken::encode(&jsonwebtoken::Header::default(), &claims, &EncodingKey::from_secret("secret".as_ref())).unwrap()
+    jsonwebtoken::encode(&jsonwebtoken::Header::default(), &claims, &EncodingKey::from_secret(std::env::var("SECRET").unwrap().as_ref())).unwrap()
 }
