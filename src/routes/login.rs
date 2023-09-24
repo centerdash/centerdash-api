@@ -20,7 +20,7 @@ async fn handler(body: web::Json<Body>, state: web::Data<AppState>) -> impl Resp
         None => {
             return HttpResponse::Unauthorized().json(json!({
                 "success": false,
-                "error": "Wrong login or password",
+                "error": "Wrong username or password",
                 "error_code": "WRONG_CREDENTIALS",
             }));
         },
@@ -29,7 +29,7 @@ async fn handler(body: web::Json<Body>, state: web::Data<AppState>) -> impl Resp
     if !bcrypt::verify(&body.password, &user.password).unwrap() {
         return HttpResponse::Unauthorized().json(json!({
             "success": false,
-            "error": "Wrong login or password",
+            "error": "Wrong username or password",
             "error_code": "WRONG_CREDENTIALS",
         }));
     }
