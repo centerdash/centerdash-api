@@ -11,7 +11,7 @@ pub struct User {
     #[sqlx(rename = "userCoins")]
     pub user_coins: i32,
     #[sqlx(rename = "creatorPoints")]
-    pub creator_points: i32,
+    pub creator_points: f64,
     #[sqlx(rename = "accIcon")]
     pub acc_icon: i32,
     #[sqlx(rename = "accShip")]
