@@ -19,7 +19,7 @@ async fn handler(state: web::Data<AppState>) -> impl Responder {
             "coins": user.1.coins,
             "silver_coins": user.1.user_coins,
             "demons": user.1.demons,
-            "creator_points": user.1.creator_points,
+            "creator_points": user.1.creator_points.round().rem_euclid(2f64.powi(32)) as u32 as i32,
             "cube": user.1.acc_icon,
             "ship": user.1.acc_ship,
             "ball": user.1.acc_ball,
