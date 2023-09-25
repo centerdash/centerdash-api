@@ -2,7 +2,7 @@ use actix_web::{post, HttpResponse, Responder, web};
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::{AppState, models::user::User};
+use crate::{AppState, models::account::Account};
 
 #[derive(Deserialize)]
 struct Body {
@@ -12,7 +12,7 @@ struct Body {
 
 #[post("/users/login")]
 async fn handler(body: web::Json<Body>, state: web::Data<AppState>) -> impl Responder {
-    let user: User = match sqlx::query_as("SELECT * FROM accounts WHERE username = ? AND isActive = 1")
+    let user: Account = match sqlx::query_as("SELECT * FROM accounts WHERE username = ? AND isActive = 1")
         .bind(&body.username)
         .fetch_optional(&state.db).await.unwrap()
     {

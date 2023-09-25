@@ -2,7 +2,7 @@ use actix_web::{post, Responder, HttpResponse, web};
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::{models::user::User, helpers::{token::generate_jwt, timestamp::get_timestamp}, AppState};
+use crate::{models::account::Account, helpers::{token::generate_jwt, timestamp::get_timestamp}, AppState};
 
 #[derive(Deserialize)]
 struct Body {
@@ -64,7 +64,7 @@ async fn handler(body: web::Json<Body>, state: web::Data<AppState>) -> impl Resp
         }));
     }
 
-    match sqlx::query_as::<_, User>("SELECT * FROM accounts WHERE username = ?")
+    match sqlx::query_as::<_, Account>("SELECT * FROM accounts WHERE username = ?")
         .bind(&body.username)
         .fetch_optional(&state.db).await.unwrap()
     {

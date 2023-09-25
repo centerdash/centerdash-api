@@ -41,6 +41,8 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(AppState { db: pool.clone() }))
             .service(routes::login::handler)
             .service(routes::register::handler)
+            .service(routes::verify::handler)
+            .service(routes::player_top::handler)
             .wrap(Logger::default())
             .wrap(cors)
     })
